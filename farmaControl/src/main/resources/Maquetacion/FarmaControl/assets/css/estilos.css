@@ -1,0 +1,34 @@
+#Logo {
+    text-align: center;
+    max-width: 200px;
+    margin: auto;
+    border-radius: 10px;
+}
+#ContactoBoton{
+    display: block;
+    margin: 50px auto;
+    padding: 12px 25px;
+    font-size: 18px;
+    max-width: 300px;
+}
+.BotonPrincipal{
+    display: block;
+    background-color:rgb(204, 255, 153);
+    margin: 50px auto;
+    padding: 12px 25px;
+    font-size: 18px;
+}
+#InicioBoton{
+    display: block;
+    margin: 500px auto;
+    padding: 12px 25px;
+    font-size: 18px;
+}
+.Titulo{
+    color:rgb(102, 255, 102);
+    margin-left:485px;
+}
+.Acceso{
+    text-align: center;
+    color:rgb(102, 255, 102);
+}
