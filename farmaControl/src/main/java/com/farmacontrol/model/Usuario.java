@@ -12,6 +12,7 @@ public class Usuario {
     public Usuario() {
     }
 
+
     // Constructor completo
     public Usuario(int idUsuario, String nombre, String email, String contrasena, Rol rol) {
         this.idUsuario = idUsuario;
