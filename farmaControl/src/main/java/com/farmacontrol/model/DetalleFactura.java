@@ -13,6 +13,13 @@ public class DetalleFactura {
     public DetalleFactura() {
     }
 
+    //Constructor simplicado para producto y cantidad
+    public DetalleFactura(Producto producto, int cantidad) {
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioUnitario = producto.getPrecio().doubleValue(); // usa precio del producto
+        this.subtotal = this.precioUnitario * cantidad;           // calcula subtotal
+    }
     // Constructor completo
     public DetalleFactura(int idDetalle, Factura factura, Producto producto, int cantidad, double precioUnitario, double subtotal) {
         this.idDetalle = idDetalle;
@@ -54,6 +61,7 @@ public class DetalleFactura {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+        this.subtotal = this.precioUnitario * cantidad; // recalcular subtotal automáticamente
     }
 
     public double getPrecioUnitario() {
