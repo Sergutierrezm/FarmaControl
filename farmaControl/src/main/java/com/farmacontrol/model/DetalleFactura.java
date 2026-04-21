@@ -1,27 +1,31 @@
 package com.farmacontrol.model;
 
+import java.math.BigDecimal;
+
 public class DetalleFactura {
 
     private int idDetalle;
-    private Factura factura;     // Relación con Factura
-    private Producto producto;   // Relación con Producto
+    private Factura factura;
+    private Producto producto;
     private int cantidad;
-    private double precioUnitario;
-    private double subtotal;
+    private BigDecimal precioUnitario;
+    private BigDecimal subtotal;
 
-    // Constructor vacío
     public DetalleFactura() {
     }
 
-    //Constructor simplicado para producto y cantidad
+    // Constructor simplificado
     public DetalleFactura(Producto producto, int cantidad) {
         this.producto = producto;
         this.cantidad = cantidad;
-        this.precioUnitario = producto.getPrecio().doubleValue(); // usa precio del producto
-        this.subtotal = this.precioUnitario * cantidad;           // calcula subtotal
+        this.precioUnitario = producto.getPrecio();
+
+        this.subtotal = this.precioUnitario.multiply(BigDecimal.valueOf(cantidad));
     }
+
     // Constructor completo
-    public DetalleFactura(int idDetalle, Factura factura, Producto producto, int cantidad, double precioUnitario, double subtotal) {
+    public DetalleFactura(int idDetalle, Factura factura, Producto producto,
+                          int cantidad, BigDecimal precioUnitario, BigDecimal subtotal) {
         this.idDetalle = idDetalle;
         this.factura = factura;
         this.producto = producto;
@@ -61,22 +65,29 @@ public class DetalleFactura {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-        this.subtotal = this.precioUnitario * cantidad; // recalcular subtotal automáticamente
+        recalcularSubtotal();
     }
 
-    public double getPrecioUnitario() {
+    public BigDecimal getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(double precioUnitario) {
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
         this.precioUnitario = precioUnitario;
+        recalcularSubtotal();
     }
 
-    public double getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(double subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    private void recalcularSubtotal() {
+        if (precioUnitario != null) {
+            this.subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
+        }
     }
 }
