@@ -13,16 +13,16 @@ public class TestFactura {
 
         System.out.println("=== TEST FUNCIONALIDADES FACTURA ===");
 
-        // 1️⃣ Crear DAO y Service
+        // Crear DAO y Service
         FacturaDAO facturaDAO = new FacturaDAO();
         FacturaService facturaService = new FacturaService(facturaDAO);
 
-        // 2️⃣ Crear proveedor y productos
+        // Crear proveedor y productos
         Proveedor prov = new Proveedor(1, "Proveedor1", "123456789", "Madrid");
         Producto p1 = new Producto(1, "Paracetamol", "Dolor de cabeza", new BigDecimal("5.00"), 10, prov);
         Producto p2 = new Producto(2, "Ibuprofeno", "Inflamación", new BigDecimal("8.00"), 5, prov);
 
-        // 3️⃣ Crear factura
+        // Crear factura
         Factura factura = facturaService.crearFactura(1);
 
         // Asignar cliente y usuario (simulados)
@@ -35,7 +35,7 @@ public class TestFactura {
         factura.setUsuario(usuario);
         factura.setFecha(LocalDateTime.now());
 
-        // 4️⃣ Prueba 1: Crear factura y almacenar
+        // Prueba 1: Crear factura y almacenar
         System.out.println("\n--- Prueba 1: Crear factura y almacenar ---");
         if (facturaService.buscarFactura(1) != null) {
             System.out.println("Prueba 1 OK: Factura creada y almacenada correctamente");
@@ -43,7 +43,7 @@ public class TestFactura {
             System.out.println("Prueba 1 FALLIDA");
         }
 
-        // 5️⃣ Prueba 2: Agregar productos y calcular total
+        // Prueba 2: Agregar productos y calcular total
         System.out.println("\n--- Prueba 2: Agregar productos y calcular total ---");
         facturaService.agregarProducto(factura, p1, 3); // 5*3 = 15
         facturaService.agregarProducto(factura, p2, 2); // 8*2 = 16
@@ -57,7 +57,7 @@ public class TestFactura {
             System.out.println("Prueba 2 FALLIDA");
         }
 
-        // 6️⃣ Mostrar todas las facturas
+        // Mostrar todas las facturas
         System.out.println("\n--- Mostrar facturas guardadas ---");
         facturaService.mostrarFacturas();
     }
