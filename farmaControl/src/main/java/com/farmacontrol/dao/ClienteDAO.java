@@ -13,6 +13,8 @@ public class ClienteDAO {
     // =========================
     public void insertar(Cliente c) {
 
+        if (c == null) return;
+
         String sql = "INSERT INTO Cliente (nombre, telefono, email, direccion) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexionBD.getConnection();
@@ -25,15 +27,13 @@ public class ClienteDAO {
 
             stmt.executeUpdate();
 
-            // Recuperar ID autogenerado
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 c.setIdCliente(rs.getInt(1));
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al insertar cliente");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al insertar cliente", e);
         }
     }
 
@@ -53,7 +53,6 @@ public class ClienteDAO {
             while (rs.next()) {
 
                 Cliente c = new Cliente();
-
                 c.setIdCliente(rs.getInt("id_cliente"));
                 c.setNombre(rs.getString("nombre"));
                 c.setTelefono(rs.getString("telefono"));
@@ -64,8 +63,7 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al listar clientes");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al listar clientes", e);
         }
 
         return lista;
@@ -88,7 +86,6 @@ public class ClienteDAO {
             if (rs.next()) {
 
                 Cliente c = new Cliente();
-
                 c.setIdCliente(rs.getInt("id_cliente"));
                 c.setNombre(rs.getString("nombre"));
                 c.setTelefono(rs.getString("telefono"));
@@ -99,8 +96,7 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al buscar cliente");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al buscar cliente", e);
         }
 
         return null;
@@ -120,8 +116,7 @@ public class ClienteDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al eliminar cliente");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al eliminar cliente", e);
         }
     }
 
@@ -129,6 +124,8 @@ public class ClienteDAO {
     // ACTUALIZAR CLIENTE
     // =========================
     public void actualizar(Cliente c) {
+
+        if (c == null) return;
 
         String sql = "UPDATE Cliente SET nombre=?, telefono=?, email=?, direccion=? WHERE id_cliente=?";
 
@@ -144,8 +141,7 @@ public class ClienteDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al actualizar cliente");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al actualizar cliente", e);
         }
     }
 }

@@ -8,10 +8,19 @@ public class LogActividad {
     private LocalDateTime fecha;
     private String tipoAccion;
     private String descripcion;
-    private Usuario usuario; // relación con Usuario
+    private Usuario usuario;
 
-    // Constructor vacío
+    // Constructor vacío (pone fecha automática)
     public LogActividad() {
+        this.fecha = LocalDateTime.now();
+    }
+
+    // Constructor sin ID (para INSERT en BD)
+    public LogActividad(LocalDateTime fecha, String tipoAccion, String descripcion, Usuario usuario) {
+        this.fecha = fecha;
+        this.tipoAccion = tipoAccion;
+        this.descripcion = descripcion;
+        this.usuario = usuario;
     }
 
     // Constructor completo

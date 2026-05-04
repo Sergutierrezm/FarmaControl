@@ -14,6 +14,8 @@ public class UsuarioDAO {
     // =========================
     public void insertar(Usuario u) {
 
+        if (u == null) return;
+
         String sql = "INSERT INTO Usuario (nombre, email, contrasena, id_rol) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexionBD.getConnection();
@@ -22,7 +24,12 @@ public class UsuarioDAO {
             stmt.setString(1, u.getNombre());
             stmt.setString(2, u.getEmail());
             stmt.setString(3, u.getContrasena());
-            stmt.setInt(4, u.getRol().getIdRol());
+
+            if (u.getRol() != null) {
+                stmt.setInt(4, u.getRol().getIdRol());
+            } else {
+                stmt.setNull(4, Types.INTEGER);
+            }
 
             stmt.executeUpdate();
 
@@ -32,17 +39,16 @@ public class UsuarioDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al insertar usuario");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al insertar usuario", e);
         }
     }
 
     // =========================
-    // LOGIN (MUY IMPORTANTE)
+    // LOGIN
     // =========================
     public Usuario login(String email, String contrasena) {
 
-        String sql = "SELECT u.*, r.nombre as rol_nombre, r.id_rol " +
+        String sql = "SELECT u.*, r.id_rol, r.nombre as rol_nombre " +
                 "FROM Usuario u " +
                 "JOIN Rol r ON u.id_rol = r.id_rol " +
                 "WHERE u.email = ? AND u.contrasena = ?";
@@ -72,8 +78,7 @@ public class UsuarioDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error en login");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error en login", e);
         }
 
         return null;
@@ -110,8 +115,7 @@ public class UsuarioDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al listar usuarios");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al listar usuarios", e);
         }
 
         return lista;
@@ -150,8 +154,7 @@ public class UsuarioDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al buscar usuario");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al buscar usuario", e);
         }
 
         return null;
@@ -171,8 +174,7 @@ public class UsuarioDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al eliminar usuario");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al eliminar usuario", e);
         }
     }
 
@@ -180,6 +182,8 @@ public class UsuarioDAO {
     // ACTUALIZAR
     // =========================
     public void actualizar(Usuario u) {
+
+        if (u == null) return;
 
         String sql = "UPDATE Usuario SET nombre=?, email=?, contrasena=?, id_rol=? WHERE id_usuario=?";
 
@@ -189,14 +193,19 @@ public class UsuarioDAO {
             stmt.setString(1, u.getNombre());
             stmt.setString(2, u.getEmail());
             stmt.setString(3, u.getContrasena());
-            stmt.setInt(4, u.getRol().getIdRol());
+
+            if (u.getRol() != null) {
+                stmt.setInt(4, u.getRol().getIdRol());
+            } else {
+                stmt.setNull(4, Types.INTEGER);
+            }
+
             stmt.setInt(5, u.getIdUsuario());
 
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al actualizar usuario");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al actualizar usuario", e);
         }
     }
 }

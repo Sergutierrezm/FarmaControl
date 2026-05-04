@@ -5,22 +5,23 @@ import java.math.BigDecimal;
 public class DetalleFactura {
 
     private int idDetalle;
-    private Factura factura;
-    private Producto producto;
+    private Factura factura;     // Relación con Factura
+    private Producto producto;   // Relación con Producto
     private int cantidad;
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
 
+    // Constructor vacío
     public DetalleFactura() {
     }
 
-    // Constructor simplificado
+    // Constructor simplificado (RECOMENDADO)
     public DetalleFactura(Producto producto, int cantidad) {
         this.producto = producto;
         this.cantidad = cantidad;
         this.precioUnitario = producto.getPrecio();
 
-        this.subtotal = this.precioUnitario.multiply(BigDecimal.valueOf(cantidad));
+        this.subtotal = this.precioUnitario.multiply(new BigDecimal(cantidad));
     }
 
     // Constructor completo
@@ -57,6 +58,8 @@ public class DetalleFactura {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+        this.precioUnitario = producto.getPrecio();
+        this.subtotal = this.precioUnitario.multiply(new BigDecimal(cantidad));
     }
 
     public int getCantidad() {
@@ -65,7 +68,7 @@ public class DetalleFactura {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-        recalcularSubtotal();
+        this.subtotal = this.precioUnitario.multiply(new BigDecimal(cantidad));
     }
 
     public BigDecimal getPrecioUnitario() {
@@ -74,7 +77,6 @@ public class DetalleFactura {
 
     public void setPrecioUnitario(BigDecimal precioUnitario) {
         this.precioUnitario = precioUnitario;
-        recalcularSubtotal();
     }
 
     public BigDecimal getSubtotal() {
@@ -83,11 +85,5 @@ public class DetalleFactura {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
-    }
-
-    private void recalcularSubtotal() {
-        if (precioUnitario != null) {
-            this.subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
-        }
     }
 }

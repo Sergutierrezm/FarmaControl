@@ -4,6 +4,7 @@ import com.farmacontrol.model.DetalleFactura;
 import com.farmacontrol.model.Producto;
 import com.farmacontrol.util.ConexionBD;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class DetalleFacturaDAO {
             stmt.setInt(1, idFactura);
             stmt.setInt(2, d.getProducto().getIdProducto());
             stmt.setInt(3, d.getCantidad());
+
             stmt.setBigDecimal(4, d.getPrecioUnitario());
             stmt.setBigDecimal(5, d.getSubtotal());
 
@@ -40,13 +42,13 @@ public class DetalleFacturaDAO {
     }
 
     // =========================
-    // LISTAR DETALLES POR FACTURA
+    // LISTAR POR FACTURA
     // =========================
     public ArrayList<DetalleFactura> obtenerPorFactura(int idFactura) {
 
         ArrayList<DetalleFactura> lista = new ArrayList<>();
 
-        String sql = "SELECT df.*, p.nombre, p.precio " +
+        String sql = "SELECT df.*, p.nombre " +
                 "FROM DetalleFactura df " +
                 "JOIN Producto p ON df.id_producto = p.id_producto " +
                 "WHERE df.id_factura = ?";
@@ -68,6 +70,7 @@ public class DetalleFacturaDAO {
                 d.setIdDetalle(rs.getInt("id_detalle"));
                 d.setProducto(p);
                 d.setCantidad(rs.getInt("cantidad"));
+
                 d.setPrecioUnitario(rs.getBigDecimal("precio_unitario"));
                 d.setSubtotal(rs.getBigDecimal("subtotal"));
 
