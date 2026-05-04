@@ -10,6 +10,12 @@ public class Rol {
     public Rol() {
     }
 
+    // Constructor sin ID (para BD)
+    public Rol(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
+
     // Constructor completo
     public Rol(int idRol, String nombre, String descripcion) {
         this.idRol = idRol;
@@ -40,5 +46,14 @@ public class Rol {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "Rol{" +
+                "idRol=" + idRol +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
     }
 }
