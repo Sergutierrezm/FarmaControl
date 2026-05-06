@@ -7,21 +7,26 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Carga la interfaz principal (menu.fxml) desde resources
-        Parent root = FXMLLoader.load(getClass().getResource("/view/menu.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/view/login.fxml")
+        );
+
+        Parent root = loader.load();
 
         Scene scene = new Scene(root);
 
         primaryStage.setTitle("Farmacontrol - Gestión Farmacéutica");
         primaryStage.setScene(scene);
+
+        primaryStage.setResizable(false); // opcional pero recomendable
         primaryStage.show();
     }
+
     public static void main(String[] args) {
-
-        launch(args); // Lanza la aplicación JavaFX
-
-
-        }
+        launch(args);
     }
+}

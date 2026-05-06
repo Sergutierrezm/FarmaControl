@@ -28,7 +28,10 @@ public class Factura {
         this.total = BigDecimal.ZERO;
     }
 
-    // Getters y Setters
+    // =========================
+    // GETTERS Y SETTERS
+    // =========================
+
     public int getIdFactura() {
         return idFactura;
     }
@@ -65,6 +68,12 @@ public class Factura {
         return detalles;
     }
 
+    // 🔥 ESTE ERA EL QUE TE FALTABA
+    public void setDetalles(ArrayList<DetalleFactura> detalles) {
+        this.detalles = detalles;
+        calcularTotal(); // mantiene coherencia
+    }
+
     public BigDecimal getTotal() {
         return total;
     }
@@ -84,8 +93,9 @@ public class Factura {
         calcularTotal();
     }
 
-    // Calcular total (CORRECTO)
+    // Calcular total
     public void calcularTotal() {
+
         BigDecimal totalCalculado = BigDecimal.ZERO;
 
         for (DetalleFactura d : detalles) {
@@ -95,8 +105,9 @@ public class Factura {
         this.total = totalCalculado;
     }
 
-    // Mostrar factura (debug)
+    // Debug
     public void mostrarFactura() {
+
         System.out.println("Factura ID: " + idFactura + " - Fecha: " + fecha);
 
         System.out.println("Cliente: " +

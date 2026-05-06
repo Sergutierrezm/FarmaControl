@@ -2,7 +2,6 @@ package com.farmacontrol.service;
 
 import com.farmacontrol.dao.FacturaDAO;
 import com.farmacontrol.dao.ProductoDAO;
-import com.farmacontrol.dao.DetalleFacturaDAO;
 import com.farmacontrol.model.*;
 
 import java.util.ArrayList;
@@ -11,12 +10,10 @@ public class FacturaService {
 
     private final FacturaDAO facturaDAO;
     private final ProductoDAO productoDAO;
-    private final DetalleFacturaDAO detalleDAO;
 
     public FacturaService() {
         this.facturaDAO = new FacturaDAO();
         this.productoDAO = new ProductoDAO();
-        this.detalleDAO = new DetalleFacturaDAO();
     }
 
     // =========================
@@ -32,7 +29,7 @@ public class FacturaService {
     }
 
     // =========================
-    // AÑADIR PRODUCTO
+    // AÑADIR PRODUCTO (solo lógica en memoria)
     // =========================
     public void agregarProducto(Factura factura, Producto producto, int cantidad) {
 
@@ -43,12 +40,6 @@ public class FacturaService {
 
         DetalleFactura detalle = new DetalleFactura(producto, cantidad);
         factura.agregarDetalle(detalle);
-
-        // 🔥 ACTUALIZAR STOCK EN BD (IMPORTANTE)
-        int nuevoStock = producto.getStock() - cantidad;
-        producto.setStock(nuevoStock);
-
-        productoDAO.actualizarStock(producto.getIdProducto(), nuevoStock);
     }
 
     // =========================
@@ -61,15 +52,20 @@ public class FacturaService {
             return;
         }
 
-        // recalcular total
+        // recalcular total antes de guardar
         factura.calcularTotal();
 
-        // 1. guardar cabecera
+        // guardar todo (cabecera + detalles)
         facturaDAO.insertar(factura);
 
-        // 2. guardar detalles
+        // actualizar stock en BD
         for (DetalleFactura d : factura.getDetalles()) {
-            detalleDAO.insertar(d, factura.getIdFactura());
+
+            Producto p = d.getProducto();
+            int nuevoStock = p.getStock() - d.getCantidad();
+
+            p.setStock(nuevoStock);
+            productoDAO.actualizarStock(p.getIdProducto(), nuevoStock);
         }
 
         System.out.println("✅ Factura guardada correctamente");

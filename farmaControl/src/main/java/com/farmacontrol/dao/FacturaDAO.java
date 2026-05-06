@@ -20,11 +20,10 @@ public class FacturaDAO {
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            // IMPORTANTE: asegurar total actualizado
             factura.calcularTotal();
 
             stmt.setTimestamp(1, Timestamp.valueOf(factura.getFecha()));
-            stmt.setDouble(2, factura.getTotal());
+            stmt.setBigDecimal(2, factura.getTotal());
             stmt.setInt(3, factura.getCliente().getIdCliente());
             stmt.setInt(4, factura.getUsuario().getIdUsuario());
 
@@ -35,16 +34,12 @@ public class FacturaDAO {
                 factura.setIdFactura(rs.getInt(1));
             }
 
-            // =========================
-            // INSERTAR DETALLES
-            // =========================
             for (DetalleFactura d : factura.getDetalles()) {
                 detalleDAO.insertar(d, factura.getIdFactura());
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al insertar factura");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al insertar factura", e);
         }
     }
 
@@ -75,18 +70,14 @@ public class FacturaDAO {
                 u.setIdUsuario(rs.getInt("id_usuario"));
                 f.setUsuario(u);
 
-                // 🔥 IMPORTANTE: cargar detalles reales
                 f.setDetalles(detalleDAO.obtenerPorFactura(f.getIdFactura()));
-
-                // recalcular total real desde detalles
                 f.calcularTotal();
 
                 lista.add(f);
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al obtener facturas");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al obtener facturas", e);
         }
 
         return lista;
@@ -120,7 +111,6 @@ public class FacturaDAO {
                 u.setIdUsuario(rs.getInt("id_usuario"));
                 f.setUsuario(u);
 
-                // 🔥 cargar detalles reales
                 f.setDetalles(detalleDAO.obtenerPorFactura(f.getIdFactura()));
                 f.calcularTotal();
 
@@ -128,15 +118,14 @@ public class FacturaDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al buscar factura");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al buscar factura", e);
         }
 
         return null;
     }
 
     // =========================
-    // ELIMINAR FACTURA
+    // ELIMINAR
     // =========================
     public void eliminar(int id) {
 
@@ -149,8 +138,7 @@ public class FacturaDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("❌ Error al eliminar factura");
-            e.printStackTrace();
+            throw new RuntimeException("❌ Error al eliminar factura", e);
         }
     }
 }
