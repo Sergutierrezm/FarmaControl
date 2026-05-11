@@ -5,26 +5,30 @@ import java.math.BigDecimal;
 public class DetalleFactura {
 
     private int idDetalle;
-    private Factura factura;     // Relación con Factura
-    private Producto producto;   // Relación con Producto
+    private Factura factura;
+    private Producto producto;
     private int cantidad;
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
 
-    // Constructor vacío
+    // =========================
+    // CONSTRUCTORES
+    // =========================
+
     public DetalleFactura() {
     }
 
-    // Constructor simplificado (RECOMENDADO)
     public DetalleFactura(Producto producto, int cantidad) {
         this.producto = producto;
         this.cantidad = cantidad;
-        this.precioUnitario = producto.getPrecio();
 
-        this.subtotal = this.precioUnitario.multiply(new BigDecimal(cantidad));
+        if (producto != null) {
+            this.precioUnitario = producto.getPrecio();
+        }
+
+        calcularSubtotal();
     }
 
-    // Constructor completo
     public DetalleFactura(int idDetalle, Factura factura, Producto producto,
                           int cantidad, BigDecimal precioUnitario, BigDecimal subtotal) {
         this.idDetalle = idDetalle;
@@ -35,7 +39,10 @@ public class DetalleFactura {
         this.subtotal = subtotal;
     }
 
-    // Getters y Setters
+    // =========================
+    // GETTERS Y SETTERS
+    // =========================
+
     public int getIdDetalle() {
         return idDetalle;
     }
@@ -58,8 +65,10 @@ public class DetalleFactura {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
-        this.precioUnitario = producto.getPrecio();
-        this.subtotal = this.precioUnitario.multiply(new BigDecimal(cantidad));
+        if (producto != null) {
+            this.precioUnitario = producto.getPrecio();
+        }
+        calcularSubtotal();
     }
 
     public int getCantidad() {
@@ -68,7 +77,7 @@ public class DetalleFactura {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-        this.subtotal = this.precioUnitario.multiply(new BigDecimal(cantidad));
+        calcularSubtotal();
     }
 
     public BigDecimal getPrecioUnitario() {
@@ -77,6 +86,7 @@ public class DetalleFactura {
 
     public void setPrecioUnitario(BigDecimal precioUnitario) {
         this.precioUnitario = precioUnitario;
+        calcularSubtotal();
     }
 
     public BigDecimal getSubtotal() {
@@ -85,5 +95,17 @@ public class DetalleFactura {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    // =========================
+    // LÓGICA CENTRAL
+    // =========================
+
+    public void calcularSubtotal() {
+        if (precioUnitario != null) {
+            this.subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
+        } else {
+            this.subtotal = BigDecimal.ZERO;
+        }
     }
 }
