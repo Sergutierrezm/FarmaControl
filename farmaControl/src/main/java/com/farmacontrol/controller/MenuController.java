@@ -68,4 +68,27 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void abrirProductos() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/productos.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Productos");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

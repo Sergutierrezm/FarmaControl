@@ -11,7 +11,7 @@
 
     <Label fx:id="lblBienvenida"/>
 
-    <Button text="Productos"/>
+    <Button text="Productos" onAction="#abrirProductos"/>
     <Button text="Facturas"/>
     <Button fx:id="btnUsuarios" text="Usuarios"/>
     <Button text="Cerrar sesión" onAction="#cerrarSesion"/>
