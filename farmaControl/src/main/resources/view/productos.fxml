@@ -23,6 +23,8 @@
                     <TableColumn fx:id="colPrecio" text="Precio" prefWidth="100"/>
                     <TableColumn fx:id="colStock" text="Stock" prefWidth="100"/>
 
+
+
                 </columns>
 
             </TableView>
@@ -39,6 +41,8 @@
             <TextField fx:id="txtDescripcion" promptText="Descripción"/>
             <TextField fx:id="txtPrecio" promptText="Precio"/>
             <TextField fx:id="txtStock" promptText="Stock"/>
+
+            <ComboBox fx:id="cbProveedor" promptText="Selecciona proveedor"/>
 
         </VBox>
 

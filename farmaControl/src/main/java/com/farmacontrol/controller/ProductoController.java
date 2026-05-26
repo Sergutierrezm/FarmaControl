@@ -14,6 +14,17 @@ import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 
+
+import com.farmacontrol.model.Proveedor;
+
+
+
+
+
+import javafx.scene.control.ComboBox;
+
+
+
 public class ProductoController {
 
     // =========================
@@ -34,6 +45,14 @@ public class ProductoController {
 
     @FXML
     private TableColumn<Producto, Integer> colStock;
+
+    @FXML
+    private ComboBox<Proveedor> cbProveedor;
+
+
+
+
+
 
     // =========================
     // CAMPOS
