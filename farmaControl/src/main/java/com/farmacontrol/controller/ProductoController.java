@@ -1,7 +1,10 @@
 package com.farmacontrol.controller;
 
 import com.farmacontrol.model.Producto;
+import com.farmacontrol.model.Proveedor;
 import com.farmacontrol.service.ProductoService;
+import com.farmacontrol.dao.ProveedorDAO;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,77 +23,73 @@ public class ProductoController {
     // TABLA
     // =========================
 
-    @FXML
-    private TableView<Producto> tablaProductos;
+    @FXML private TableView<Producto> tablaProductos;
 
-    @FXML
-    private TableColumn<Producto, Integer> colId;
-
-    @FXML
-    private TableColumn<Producto, String> colNombre;
-
-    @FXML
-    private TableColumn<Producto, BigDecimal> colPrecio;
-
-    @FXML
-    private TableColumn<Producto, Integer> colStock;
+    @FXML private TableColumn<Producto, Integer> colId;
+    @FXML private TableColumn<Producto, String> colNombre;
+    @FXML private TableColumn<Producto, BigDecimal> colPrecio;
+    @FXML private TableColumn<Producto, Integer> colStock;
 
     // =========================
     // CAMPOS
     // =========================
 
-    @FXML
-    private TextField txtNombre;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtDescripcion;
+    @FXML private TextField txtPrecio;
+    @FXML private TextField txtStock;
 
+    @FXML private ComboBox<Proveedor> cbProveedor;
     @FXML
-    private TextField txtDescripcion;
-
-    @FXML
-    private TextField txtPrecio;
-
-    @FXML
-    private TextField txtStock;
+    private TableColumn<Producto, String> colProveedor;
 
     // =========================
-    // SERVICE
+    // SERVICE / DAO
     // =========================
 
-    private ProductoService productoService = new ProductoService();
+    private final ProductoService productoService = new ProductoService();
+    private final ProveedorDAO proveedorDAO = new ProveedorDAO();
 
     // =========================
-    // INITIALIZE
+    // INIT
     // =========================
 
     @FXML
     public void initialize() {
 
-        // conectar columnas
-        colId.setCellValueFactory(
-                new PropertyValueFactory<>("idProducto"));
+        // columnas tabla
+        colProveedor.setCellValueFactory(cellData -> {
 
-        colNombre.setCellValueFactory(
-                new PropertyValueFactory<>("nombre"));
+            if (cellData.getValue().getProveedor() != null) {
+                return new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getProveedor().getNombre()
+                );
+            }
 
-        colPrecio.setCellValueFactory(
-                new PropertyValueFactory<>("precio"));
+            return new javafx.beans.property.SimpleStringProperty("Sin proveedor");
+        });
 
-        colStock.setCellValueFactory(
-                new PropertyValueFactory<>("stock"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
-        // cargar productos
+        // cargar datos
         cargarProductos();
+        cargarProveedores();
 
-        // seleccionar fila
+        // seleccionar producto
         tablaProductos.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, productoSeleccionado) -> {
+                .addListener((obs, oldVal, producto) -> {
 
-                    if (productoSeleccionado != null) {
+                    if (producto != null) {
 
-                        txtNombre.setText(productoSeleccionado.getNombre());
-                        txtDescripcion.setText(productoSeleccionado.getDescripcion());
-                        txtPrecio.setText(productoSeleccionado.getPrecio().toString());
-                        txtStock.setText(String.valueOf(productoSeleccionado.getStock()));
+                        txtNombre.setText(producto.getNombre());
+                        txtDescripcion.setText(producto.getDescripcion());
+                        txtPrecio.setText(producto.getPrecio().toString());
+                        txtStock.setText(String.valueOf(producto.getStock()));
+
+                        cbProveedor.setValue(producto.getProveedor());
                     }
                 });
     }
@@ -110,7 +109,20 @@ public class ProductoController {
     }
 
     // =========================
-    // GUARDAR PRODUCTO
+    // CARGAR PROVEEDORES
+    // =========================
+
+    private void cargarProveedores() {
+
+        cbProveedor.setItems(
+                FXCollections.observableArrayList(
+                        proveedorDAO.obtenerTodos()
+                )
+        );
+    }
+
+    // =========================
+    // GUARDAR
     // =========================
 
     @FXML
@@ -118,40 +130,24 @@ public class ProductoController {
 
         try {
 
-            Producto productoSeleccionado =
+            Producto seleccionado =
                     tablaProductos.getSelectionModel().getSelectedItem();
 
-            Producto p;
-
-            // EDITAR
-            if (productoSeleccionado != null) {
-
-                p = productoSeleccionado;
-
-            } else {
-
-                // NUEVO
-                p = new Producto();
-            }
+            Producto p = (seleccionado != null) ? seleccionado : new Producto();
 
             p.setNombre(txtNombre.getText());
             p.setDescripcion(txtDescripcion.getText());
 
-            p.setPrecio(
-                    new BigDecimal(txtPrecio.getText())
-            );
+            p.setPrecio(new BigDecimal(txtPrecio.getText()));
+            p.setStock(Integer.parseInt(txtStock.getText()));
 
-            p.setStock(
-                    Integer.parseInt(txtStock.getText())
-            );
+            // 🔥 PROVEEDOR (CLAVE)
+            Proveedor proveedor = cbProveedor.getValue();
+            p.setProveedor(proveedor);
 
-            // INSERTAR o ACTUALIZAR
-            if (productoSeleccionado == null) {
-
+            if (seleccionado == null) {
                 productoService.registrarProducto(p);
-
             } else {
-
                 productoService.actualizarProducto(p);
             }
 
@@ -161,10 +157,10 @@ public class ProductoController {
         } catch (Exception e) {
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error real");
 
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Datos inválidos");
+            // 🔥 importante: ver error real
+            alert.setContentText(e.getMessage());
 
             alert.showAndWait();
 
@@ -173,38 +169,31 @@ public class ProductoController {
     }
 
     // =========================
-    // ELIMINAR PRODUCTO
+    // ELIMINAR
     // =========================
 
     @FXML
     public void eliminarProducto() {
 
-        Producto productoSeleccionado =
+        Producto seleccionado =
                 tablaProductos.getSelectionModel().getSelectedItem();
 
-        if (productoSeleccionado == null) {
+        if (seleccionado == null) {
 
             Alert alert = new Alert(Alert.AlertType.WARNING);
-
-            alert.setTitle("Aviso");
-            alert.setHeaderText(null);
             alert.setContentText("Selecciona un producto");
-
             alert.showAndWait();
-
             return;
         }
 
-        productoService.eliminarProducto(
-                productoSeleccionado.getIdProducto()
-        );
+        productoService.eliminarProducto(seleccionado.getIdProducto());
 
         limpiarCampos();
         cargarProductos();
     }
 
     // =========================
-    // LIMPIAR CAMPOS
+    // LIMPIAR
     // =========================
 
     private void limpiarCampos() {
@@ -214,11 +203,12 @@ public class ProductoController {
         txtPrecio.clear();
         txtStock.clear();
 
+        cbProveedor.setValue(null);
         tablaProductos.getSelectionModel().clearSelection();
     }
 
     // =========================
-    // VOLVER AL MENÚ
+    // VOLVER
     // =========================
 
     @FXML

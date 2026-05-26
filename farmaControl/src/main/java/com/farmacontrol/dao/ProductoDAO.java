@@ -44,13 +44,17 @@ public class ProductoDAO {
     }
 
     // =========================
-    // OBTENER TODOS
+    // OBTENER TODOS (CORREGIDO)
     // =========================
     public ArrayList<Producto> obtenerTodos() {
 
         ArrayList<Producto> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM Producto";
+        String sql =
+                "SELECT p.id_producto, p.nombre, p.descripcion, p.precio, p.stock, " +
+                        "pr.id_proveedor, pr.nombre AS proveedor_nombre " +
+                        "FROM Producto p " +
+                        "LEFT JOIN Proveedor pr ON p.id_proveedor = pr.id_proveedor";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -67,6 +71,8 @@ public class ProductoDAO {
 
                 Proveedor prov = new Proveedor();
                 prov.setIdProveedor(rs.getInt("id_proveedor"));
+                prov.setNombre(rs.getString("proveedor_nombre"));
+
                 p.setProveedor(prov);
 
                 lista.add(p);
@@ -80,11 +86,16 @@ public class ProductoDAO {
     }
 
     // =========================
-    // BUSCAR POR ID
+    // BUSCAR POR ID (CORREGIDO)
     // =========================
     public Producto buscarPorId(int id) {
 
-        String sql = "SELECT * FROM Producto WHERE id_producto = ?";
+        String sql =
+                "SELECT p.id_producto, p.nombre, p.descripcion, p.precio, p.stock, " +
+                        "pr.id_proveedor, pr.nombre AS proveedor_nombre " +
+                        "FROM Producto p " +
+                        "LEFT JOIN Proveedor pr ON p.id_proveedor = pr.id_proveedor " +
+                        "WHERE p.id_producto = ?";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -104,6 +115,8 @@ public class ProductoDAO {
 
                 Proveedor prov = new Proveedor();
                 prov.setIdProveedor(rs.getInt("id_proveedor"));
+                prov.setNombre(rs.getString("proveedor_nombre"));
+
                 p.setProveedor(prov);
 
                 return p;
@@ -147,7 +160,7 @@ public class ProductoDAO {
     }
 
     // =========================
-    // ACTUALIZAR STOCK (CLAVE PARA TU SISTEMA)
+    // ACTUALIZAR STOCK
     // =========================
     public void actualizarStock(int idProducto, int nuevoStock) {
 
