@@ -13,8 +13,6 @@ public class ClienteDAO {
     // =========================
     public void insertar(Cliente c) {
 
-        if (c == null) return;
-
         String sql = "INSERT INTO Cliente (nombre, telefono, email, direccion) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexionBD.getConnection();
@@ -33,18 +31,18 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("❌ Error al insertar cliente", e);
+            throw new RuntimeException("Error al insertar cliente", e);
         }
     }
 
     // =========================
-    // LISTAR TODOS
+    // OBTENER TODOS
     // =========================
     public ArrayList<Cliente> obtenerTodos() {
 
         ArrayList<Cliente> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM Cliente";
+        String sql = "SELECT id_cliente, nombre, telefono, email, direccion FROM Cliente";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -63,7 +61,7 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("❌ Error al listar clientes", e);
+            throw new RuntimeException("Error al obtener clientes", e);
         }
 
         return lista;
@@ -74,7 +72,7 @@ public class ClienteDAO {
     // =========================
     public Cliente buscarPorId(int id) {
 
-        String sql = "SELECT * FROM Cliente WHERE id_cliente = ?";
+        String sql = "SELECT id_cliente, nombre, telefono, email, direccion FROM Cliente WHERE id_cliente = ?";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -96,10 +94,33 @@ public class ClienteDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("❌ Error al buscar cliente", e);
+            throw new RuntimeException("Error al buscar cliente", e);
         }
 
         return null;
+    }
+
+    // =========================
+    // ACTUALIZAR CLIENTE
+    // =========================
+    public void actualizar(Cliente c) {
+
+        String sql = "UPDATE Cliente SET nombre=?, telefono=?, email=?, direccion=? WHERE id_cliente=?";
+
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, c.getNombre());
+            stmt.setString(2, c.getTelefono());
+            stmt.setString(3, c.getEmail());
+            stmt.setString(4, c.getDireccion());
+            stmt.setInt(5, c.getIdCliente());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar cliente", e);
+        }
     }
 
     // =========================
@@ -116,32 +137,7 @@ public class ClienteDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("❌ Error al eliminar cliente", e);
-        }
-    }
-
-    // =========================
-    // ACTUALIZAR CLIENTE
-    // =========================
-    public void actualizar(Cliente c) {
-
-        if (c == null) return;
-
-        String sql = "UPDATE Cliente SET nombre=?, telefono=?, email=?, direccion=? WHERE id_cliente=?";
-
-        try (Connection conn = ConexionBD.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, c.getNombre());
-            stmt.setString(2, c.getTelefono());
-            stmt.setString(3, c.getEmail());
-            stmt.setString(4, c.getDireccion());
-            stmt.setInt(5, c.getIdCliente());
-
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("❌ Error al actualizar cliente", e);
+            throw new RuntimeException("Error al eliminar cliente", e);
         }
     }
 }

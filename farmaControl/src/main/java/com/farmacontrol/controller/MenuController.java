@@ -91,6 +91,27 @@ public class MenuController {
     }
 
     @FXML
+    public void abrirClientes() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/clientes.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gestión de Clientes");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void abrirUsuarios() {
 
         try {

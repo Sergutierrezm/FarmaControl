@@ -35,6 +35,11 @@
 
                     prefHeight="50"/>
 
+            <Button text="Clientes"
+                    onAction="#abrirClientes"
+                    prefWidth="250"
+                    prefHeight="50"/>
+
             <Button text="Cerrar sesión"
                     onAction="#cerrarSesion"
                     prefWidth="250"
