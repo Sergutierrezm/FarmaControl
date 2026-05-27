@@ -90,5 +90,26 @@ public class MenuController {
         }
     }
 
+    @FXML
+    public void abrirUsuarios() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/usuarios.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gestión de Usuarios");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

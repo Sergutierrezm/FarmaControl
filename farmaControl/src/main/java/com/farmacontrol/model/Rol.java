@@ -50,10 +50,6 @@ public class Rol {
 
     @Override
     public String toString() {
-        return "Rol{" +
-                "idRol=" + idRol +
-                ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                '}';
+        return nombre;
     }
 }

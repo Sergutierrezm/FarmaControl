@@ -8,39 +8,105 @@
         xmlns:fx="http://javafx.com/fxml"
         fx:controller="com.farmacontrol.controller.ProductoController">
 
-    <!-- PARTE SUPERIOR -->
+    <!-- TÍTULO -->
     <top>
-        <VBox spacing="10" alignment="CENTER">
 
-            <Label text="GESTIÓN DE PRODUCTOS"/>
+        <VBox alignment="CENTER" spacing="15"
+              style="-fx-padding: 20;">
 
-            <TableView fx:id="tablaProductos" prefHeight="300">
+            <Label text="GESTIÓN DE PRODUCTOS"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+
+        </VBox>
+
+    </top>
+
+    <!-- CONTENIDO -->
+    <center>
+
+        <VBox spacing="20"
+              alignment="TOP_CENTER"
+              style="-fx-padding: 20;">
+
+            <!-- TABLA -->
+            <TableView fx:id="tablaProductos"
+                       prefHeight="400"
+                       prefWidth="900">
 
                 <columns>
 
-                    <TableColumn fx:id="colProveedor" text="Proveedor" prefWidth="180"/>
-                    <TableColumn fx:id="colNombre" text="Nombre" prefWidth="180"/>
-                    <TableColumn fx:id="colPrecio" text="Precio" prefWidth="100"/>
-                    <TableColumn fx:id="colStock" text="Stock" prefWidth="100"/>
+                    <TableColumn fx:id="colProveedor"
+                                 text="Proveedor"
+                                 prefWidth="220"/>
+
+                    <TableColumn fx:id="colNombre"
+                                 text="Nombre"
+                                 prefWidth="250"/>
+
+                    <TableColumn fx:id="colPrecio"
+                                 text="Precio"
+                                 prefWidth="150"/>
+
+                    <TableColumn fx:id="colStock"
+                                 text="Stock"
+                                 prefWidth="150"/>
 
                 </columns>
 
             </TableView>
 
-        </VBox>
-    </top>
+            <!-- FORMULARIO -->
+            <GridPane hgap="10"
+                      vgap="10"
+                      alignment="CENTER">
 
-    <!-- FORMULARIO -->
-    <center>
+                <Label text="Nombre:"
+                       GridPane.rowIndex="0"
+                       GridPane.columnIndex="0"/>
 
-        <VBox spacing="10" alignment="CENTER">
+                <TextField fx:id="txtNombre"
+                           promptText="Nombre"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="1"/>
 
-            <TextField fx:id="txtNombre" promptText="Nombre"/>
-            <TextField fx:id="txtDescripcion" promptText="Descripción"/>
-            <TextField fx:id="txtPrecio" promptText="Precio"/>
-            <TextField fx:id="txtStock" promptText="Stock"/>
+                <Label text="Descripción:"
+                       GridPane.rowIndex="1"
+                       GridPane.columnIndex="0"/>
 
-            <ComboBox fx:id="cbProveedor" promptText="Selecciona proveedor"/>
+                <TextField fx:id="txtDescripcion"
+                           promptText="Descripción"
+                           GridPane.rowIndex="1"
+                           GridPane.columnIndex="1"/>
+
+                <Label text="Precio:"
+                       GridPane.rowIndex="2"
+                       GridPane.columnIndex="0"/>
+
+                <TextField fx:id="txtPrecio"
+                           promptText="Precio"
+                           GridPane.rowIndex="2"
+                           GridPane.columnIndex="1"/>
+
+                <Label text="Stock:"
+                       GridPane.rowIndex="3"
+                       GridPane.columnIndex="0"/>
+
+                <TextField fx:id="txtStock"
+                           promptText="Stock"
+                           GridPane.rowIndex="3"
+                           GridPane.columnIndex="1"/>
+
+                <Label text="Proveedor:"
+                       GridPane.rowIndex="4"
+                       GridPane.columnIndex="0"/>
+
+                <ComboBox fx:id="cbProveedor"
+                          promptText="Selecciona proveedor"
+                          prefWidth="220"
+                          GridPane.rowIndex="4"
+                          GridPane.columnIndex="1"/>
+
+            </GridPane>
 
         </VBox>
 
@@ -49,11 +115,24 @@
     <!-- BOTONES -->
     <bottom>
 
-        <HBox spacing="10" alignment="CENTER">
+        <HBox spacing="20"
+              alignment="CENTER"
+              style="-fx-padding: 20;">
 
-            <Button text="Guardar" onAction="#guardarProducto"/>
-            <Button text="Eliminar" onAction="#eliminarProducto"/>
-            <Button text="Volver" onAction="#volverMenu"/>
+            <Button text="Guardar"
+                    onAction="#guardarProducto"
+                    prefWidth="140"
+                    prefHeight="40"/>
+
+            <Button text="Eliminar"
+                    onAction="#eliminarProducto"
+                    prefWidth="140"
+                    prefHeight="40"/>
+
+            <Button text="Volver"
+                    onAction="#volverMenu"
+                    prefWidth="140"
+                    prefHeight="40"/>
 
         </HBox>
 
