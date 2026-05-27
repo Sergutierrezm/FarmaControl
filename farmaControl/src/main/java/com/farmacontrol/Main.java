@@ -17,7 +17,7 @@ public class Main extends Application {
 
         Parent root = loader.load();
 
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 1200, 800);
 
         primaryStage.setTitle("Farmacontrol - Gestión Farmacéutica");
         primaryStage.setScene(scene);
