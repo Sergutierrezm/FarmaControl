@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.farmacontrol.controller.InformesController">
+
+    <top>
+        <Label text="INFORMES"
+               style="-fx-font-size: 24px;"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <TableView fx:id="tablaResultados" prefHeight="400">
+
+            <columns>
+                <TableColumn fx:id="col1" text="Concepto" prefWidth="300"/>
+                <TableColumn fx:id="col2" text="Valor" prefWidth="200"/>
+            </columns>
+
+        </TableView>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER"
+              style="-fx-padding: 20;">
+
+            <Button text="Top Clientes" onAction="#informeClientes"/>
+            <Button text="Top Productos" onAction="#informeProductos"/>
+            <Button text="Total Facturas" onAction="#informeFacturas"/>
+
+            <!-- 🔥 BOTÓN NUEVO -->
+            <Button text="Descargar" onAction="#descargarInforme"/>
+
+            <Button text="Volver" onAction="#volver"/>
+
+        </HBox>
+    </bottom>
+
+</BorderPane>
