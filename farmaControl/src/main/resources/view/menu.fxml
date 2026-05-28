@@ -42,10 +42,20 @@
                     prefWidth="250"
                     prefHeight="50"/>
 
+
+            <Button text="Informes"
+                    onAction="#abrirInformes"
+                    prefWidth="250"
+                    prefHeight="50"/>
+
             <Button text="Cerrar sesión"
                     onAction="#cerrarSesion"
                     prefWidth="250"
                     prefHeight="50"/>
+
+
+
+
 
         </VBox>
 

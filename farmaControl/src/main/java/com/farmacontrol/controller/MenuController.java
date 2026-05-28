@@ -152,5 +152,26 @@ public class MenuController {
         }
     }
 
+    @FXML
+    public void abrirInformes() {
+
+        try {
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/informes.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Informes");
+
+        } catch (Exception e) {
+            System.out.println("❌ ERROR ABRIENDO INFORMES:");
+            e.printStackTrace();
+        }
+    }
+
 
 }
