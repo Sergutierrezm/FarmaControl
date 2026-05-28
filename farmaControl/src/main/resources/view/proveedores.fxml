@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane
+        xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.farmacontrol.controller.ProveedorController">
+
+    <!-- TÍTULO -->
+    <top>
+
+        <VBox alignment="CENTER" spacing="15"
+              style="-fx-padding: 20;">
+
+            <Label text="GESTIÓN DE PROVEEDORES"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+
+        </VBox>
+
+    </top>
+
+    <!-- CONTENIDO -->
+    <center>
+
+        <VBox spacing="20"
+              alignment="TOP_CENTER"
+              style="-fx-padding: 20;">
+
+            <!-- TABLA -->
+            <TableView fx:id="tablaProveedores"
+                       prefHeight="400"
+                       prefWidth="900">
+
+                <columns>
+
+                    <TableColumn fx:id="colId"
+                                 text="ID"
+                                 prefWidth="80"/>
+
+                    <TableColumn fx:id="colNombre"
+                                 text="Nombre"
+                                 prefWidth="250"/>
+
+                    <TableColumn fx:id="colTelefono"
+                                 text="Teléfono"
+                                 prefWidth="180"/>
+
+                    <TableColumn fx:id="colDireccion"
+                                 text="Dirección"
+                                 prefWidth="380"/>
+
+                </columns>
+
+            </TableView>
+
+            <!-- FORMULARIO -->
+            <GridPane hgap="10"
+                      vgap="10"
+                      alignment="CENTER">
+
+                <Label text="Nombre:"
+                       GridPane.rowIndex="0"
+                       GridPane.columnIndex="0"/>
+
+                <TextField fx:id="txtNombre"
+                           promptText="Nombre"
+                           prefWidth="300"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="1"/>
+
+                <Label text="Teléfono:"
+                       GridPane.rowIndex="1"
+                       GridPane.columnIndex="0"/>
+
+                <TextField fx:id="txtTelefono"
+                           promptText="Teléfono"
+                           prefWidth="300"
+                           GridPane.rowIndex="1"
+                           GridPane.columnIndex="1"/>
+
+                <Label text="Dirección:"
+                       GridPane.rowIndex="2"
+                       GridPane.columnIndex="0"/>
+
+                <TextField fx:id="txtDireccion"
+                           promptText="Dirección"
+                           prefWidth="300"
+                           GridPane.rowIndex="2"
+                           GridPane.columnIndex="1"/>
+
+            </GridPane>
+
+        </VBox>
+
+    </center>
+
+    <!-- BOTONES -->
+    <bottom>
+
+        <HBox spacing="20"
+              alignment="CENTER"
+              style="-fx-padding: 20;">
+
+            <Button text="Guardar"
+                    onAction="#guardarProveedor"
+                    prefWidth="140"
+                    prefHeight="40"/>
+
+            <Button text="Eliminar"
+                    onAction="#eliminarProveedor"
+                    prefWidth="140"
+                    prefHeight="40"/>
+
+            <Button text="Volver"
+                    onAction="#volverMenu"
+                    prefWidth="140"
+                    prefHeight="40"/>
+
+        </HBox>
+
+    </bottom>
+
+</BorderPane>
