@@ -11,11 +11,15 @@
     <!-- TÍTULO -->
     <top>
 
-        <VBox alignment="CENTER" spacing="15"
+        <VBox alignment="CENTER" spacing="10"
               style="-fx-padding: 20;">
 
             <Label text="GESTIÓN DE PROVEEDORES"
                    style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+
+            <TextField fx:id="txtBuscar"
+                       promptText="Buscar por nombre, teléfono o dirección..."
+                       prefWidth="500"/>
 
         </VBox>
 
@@ -30,7 +34,7 @@
 
             <!-- TABLA -->
             <TableView fx:id="tablaProveedores"
-                       prefHeight="400"
+                       prefHeight="350"
                        prefWidth="900">
 
                 <columns>

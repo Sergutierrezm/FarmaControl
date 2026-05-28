@@ -5,6 +5,7 @@ import com.farmacontrol.service.ProveedorService;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 public class ProveedorController {
 
@@ -30,15 +33,19 @@ public class ProveedorController {
     // CAMPOS
     // =========================
 
+    @FXML private TextField txtBuscar;
     @FXML private TextField txtNombre;
     @FXML private TextField txtTelefono;
     @FXML private TextField txtDireccion;
 
     // =========================
-    // SERVICE
+    // SERVICE Y LISTAS
     // =========================
 
     private final ProveedorService service = new ProveedorService();
+
+    private ObservableList<Proveedor> listaCompleta;
+    private FilteredList<Proveedor>   listaFiltrada;
 
     // =========================
     // INIT
@@ -52,8 +59,22 @@ public class ProveedorController {
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
 
-        cargarProveedores();
+        listaCompleta = FXCollections.observableArrayList(service.obtenerProveedores());
+        listaFiltrada = new FilteredList<>(listaCompleta, p -> true);
+        tablaProveedores.setItems(listaFiltrada);
 
+        // filtro en tiempo real
+        txtBuscar.textProperty().addListener((obs, oldVal, newVal) -> {
+            listaFiltrada.setPredicate(p -> {
+                if (newVal == null || newVal.isBlank()) return true;
+                String filtro = newVal.toLowerCase();
+                return p.getNombre().toLowerCase().contains(filtro)
+                    || (p.getTelefono() != null && p.getTelefono().toLowerCase().contains(filtro))
+                    || (p.getDireccion() != null && p.getDireccion().toLowerCase().contains(filtro));
+            });
+        });
+
+        // rellenar formulario al seleccionar fila
         tablaProveedores.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, p) -> {
@@ -70,11 +91,7 @@ public class ProveedorController {
     // =========================
 
     private void cargarProveedores() {
-
-        ObservableList<Proveedor> lista =
-                FXCollections.observableArrayList(service.obtenerProveedores());
-
-        tablaProveedores.setItems(lista);
+        listaCompleta.setAll(service.obtenerProveedores());
     }
 
     // =========================
@@ -134,6 +151,14 @@ public class ProveedorController {
             return;
         }
 
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "¿Eliminar el proveedor \"" + seleccionado.getNombre() + "\"?",
+                ButtonType.YES, ButtonType.NO);
+        confirm.setTitle("Confirmar eliminación");
+
+        Optional<ButtonType> resultado = confirm.showAndWait();
+        if (resultado.isEmpty() || resultado.get() != ButtonType.YES) return;
+
         service.eliminarProveedor(seleccionado.getIdProveedor());
 
         limpiarCampos();
@@ -146,6 +171,7 @@ public class ProveedorController {
 
     private void limpiarCampos() {
 
+        txtBuscar.clear();
         txtNombre.clear();
         txtTelefono.clear();
         txtDireccion.clear();
