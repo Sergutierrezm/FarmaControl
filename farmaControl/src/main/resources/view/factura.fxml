@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.farmacontrol.controller.FacturaController"
+            prefWidth="900" prefHeight="600">
+
+    <!-- TABLA DE FACTURAS -->
+    <TableView fx:id="tablaFacturas"
+               layoutX="20" layoutY="20"
+               prefWidth="600" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colFecha" text="Fecha" prefWidth="150"/>
+            <TableColumn fx:id="colCliente" text="Cliente" prefWidth="200"/>
+            <TableColumn fx:id="colTotal" text="Total" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <!-- CAMPOS -->
+    <Label text="Cliente:" layoutX="20" layoutY="240"/>
+    <ComboBox fx:id="comboClientes"
+              layoutX="100" layoutY="235"
+              prefWidth="200"/>
+
+    <Label text="Usuario:" layoutX="20" layoutY="280"/>
+    <ComboBox fx:id="comboUsuarios"
+              layoutX="100" layoutY="275"
+              prefWidth="200"/>
+
+    <!-- TABLA DE DETALLES -->
+    <TableView fx:id="tablaDetalles"
+               layoutX="20" layoutY="330"
+               prefWidth="600" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="colProducto" text="Producto" prefWidth="200"/>
+            <TableColumn fx:id="colCantidad" text="Cantidad" prefWidth="100"/>
+            <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <!-- BOTONES -->
+    <Button fx:id="btnAgregarProducto"
+            text="Añadir producto"
+            layoutX="650" layoutY="330"
+            onAction="#agregarProducto"/>
+
+    <Button fx:id="btnGuardar"
+            text="Guardar factura"
+            layoutX="650" layoutY="380"
+            onAction="#guardarFactura"/>
+
+    <Button fx:id="btnEliminar"
+            text="Eliminar factura"
+            layoutX="650" layoutY="430"
+            onAction="#eliminarFactura"/>
+
+    <Button fx:id="btnVolver"
+            text="Volver"
+            layoutX="650" layoutY="480"
+            onAction="#volver"/>
+
+</AnchorPane>
+

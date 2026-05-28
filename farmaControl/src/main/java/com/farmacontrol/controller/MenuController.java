@@ -110,6 +110,26 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+    @FXML
+    public void abrirFacturas() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/factura.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Facturas");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
