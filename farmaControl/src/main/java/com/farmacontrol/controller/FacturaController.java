@@ -1,7 +1,7 @@
 package com.farmacontrol.controller;
 
 import com.farmacontrol.model.*;
-        import com.farmacontrol.service.FacturaService;
+import com.farmacontrol.service.FacturaService;
 import com.farmacontrol.service.ClienteService;
 import com.farmacontrol.service.UsuarioService;
 import com.farmacontrol.service.ProductoService;
@@ -10,7 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-        import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class FacturaController {
 
@@ -38,6 +38,9 @@ public class FacturaController {
     @FXML
     public void initialize() {
 
+        // ============================
+        // CONFIG TABLA FACTURAS
+        // ============================
         colId.setCellValueFactory(new PropertyValueFactory<>("idFactura"));
         colFecha.setCellValueFactory(f ->
                 new javafx.beans.property.SimpleStringProperty(f.getValue().getFecha().toString())
@@ -53,6 +56,9 @@ public class FacturaController {
                 )
         );
 
+        // ============================
+        // CONFIG TABLA DETALLES
+        // ============================
         colProducto.setCellValueFactory(d ->
                 new javafx.beans.property.SimpleStringProperty(
                         d.getValue().getProducto().getNombre()
@@ -69,6 +75,9 @@ public class FacturaController {
         cargarClientes();
         cargarUsuarios();
 
+        // ============================
+        // SELECCIÓN DE FACTURA
+        // ============================
         tablaFacturas.getSelectionModel().selectedItemProperty().addListener(
                 (obs, old, facturaSel) -> {
                     if (facturaSel != null) {
@@ -81,6 +90,10 @@ public class FacturaController {
                     }
                 }
         );
+
+        // ============================
+        // COMBO USUARIOS
+        // ============================
         comboUsuarios.setConverter(new javafx.util.StringConverter<Usuario>() {
             @Override
             public String toString(Usuario usuario) {
@@ -93,11 +106,11 @@ public class FacturaController {
                 return null;
             }
         });
+
         comboUsuarios.setCellFactory(listView -> new ListCell<Usuario>() {
             @Override
             protected void updateItem(Usuario usuario, boolean empty) {
                 super.updateItem(usuario, empty);
-
                 if (empty || usuario == null) {
                     setText(null);
                 } else {
@@ -106,7 +119,33 @@ public class FacturaController {
             }
         });
 
+        // ============================
+        // COMBO CLIENTES
+        // ============================
+        comboClientes.setConverter(new javafx.util.StringConverter<Cliente>() {
+            @Override
+            public String toString(Cliente c) {
+                if (c == null) return "";
+                return c.getNombre();
+            }
 
+            @Override
+            public Cliente fromString(String s) {
+                return null;
+            }
+        });
+
+        comboClientes.setCellFactory(listView -> new ListCell<Cliente>() {
+            @Override
+            protected void updateItem(Cliente c, boolean empty) {
+                super.updateItem(c, empty);
+                if (empty || c == null) {
+                    setText(null);
+                } else {
+                    setText(c.getNombre());
+                }
+            }
+        });
     }
 
     private void cargarFacturas() {
@@ -133,10 +172,12 @@ public class FacturaController {
         );
     }
 
+    // ============================
+    // AÑADIR PRODUCTO
+    // ============================
     @FXML
     public void agregarProducto() {
 
-        // Si no hay factura creada, la creamos
         if (facturaActual == null) {
 
             if (comboClientes.getValue() == null || comboUsuarios.getValue() == null) {
@@ -153,55 +194,77 @@ public class FacturaController {
             );
         }
 
-        // Seleccionar producto
         Producto p = seleccionarProducto();
         if (p == null) return;
 
-        // Pedir cantidad
         TextInputDialog dialog = new TextInputDialog("1");
         dialog.setHeaderText("Cantidad para " + p.getNombre());
         int cantidad = Integer.parseInt(dialog.showAndWait().get());
 
-        // Agregar detalle
         facturaActual.agregarDetalle(new DetalleFactura(p, cantidad));
 
-        // Actualizar tabla
         tablaDetalles.setItems(
                 FXCollections.observableArrayList(facturaActual.getDetalles())
         );
     }
 
-
+    // ============================
+    // CHOICEDIALOG PRODUCTOS
+    // ============================
     private Producto seleccionarProducto() {
 
-        ObservableList<Producto> productos =
-                FXCollections.observableArrayList(productoService.obtenerProductos());
+        Dialog<Producto> dialog = new Dialog<>();
+        dialog.setTitle("Seleccionar producto");
+        dialog.setHeaderText("Elige un producto");
 
-        ChoiceDialog<Producto> dialog = new ChoiceDialog<>(null, productos);
-        dialog.setHeaderText("Selecciona un producto");
+        ButtonType okButton = new ButtonType("Aceptar", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButton, ButtonType.CANCEL);
 
-        // Personalizar cómo se muestran los productos
-        dialog.getDialogPane().lookup(".list-view").setStyle("-fx-font-size: 14px;");
+        ComboBox<Producto> combo = new ComboBox<>();
+        combo.setItems(FXCollections.observableArrayList(productoService.obtenerProductos()));
 
-        // Cambiar el texto mostrado en la lista
-        ((ListView<Producto>) dialog.getDialogPane().lookup(".list-view"))
-                .setCellFactory(list -> new ListCell<Producto>() {
-                    @Override
-                    protected void updateItem(Producto p, boolean empty) {
-                        super.updateItem(p, empty);
-                        if (empty || p == null) {
-                            setText(null);
-                        } else {
-                            setText(p.getNombre() + " (" + p.getPrecio() + "€)");
-                        }
-                    }
-                });
+        combo.setConverter(new javafx.util.StringConverter<Producto>() {
+            @Override
+            public String toString(Producto p) {
+                if (p == null) return "";
+                return p.getNombre();
+            }
+
+            @Override
+            public Producto fromString(String s) {
+                return null;
+            }
+        });
+
+        combo.setCellFactory(listView -> new ListCell<Producto>() {
+            @Override
+            protected void updateItem(Producto p, boolean empty) {
+                super.updateItem(p, empty);
+                if (empty || p == null) {
+                    setText(null);
+                } else {
+                    setText(p.getNombre());
+                }
+            }
+        });
+
+        dialog.getDialogPane().setContent(combo);
+
+        dialog.setResultConverter(button -> {
+            if (button == okButton) {
+                return combo.getValue();
+            }
+            return null;
+        });
 
         return dialog.showAndWait().orElse(null);
     }
 
 
 
+    // ============================
+    // GUARDAR FACTURA
+    // ============================
     @FXML
     public void guardarFactura() {
 
@@ -222,6 +285,9 @@ public class FacturaController {
         tablaDetalles.getItems().clear();
     }
 
+    // ============================
+    // ELIMINAR FACTURA
+    // ============================
     @FXML
     public void eliminarFactura() {
 
@@ -229,10 +295,16 @@ public class FacturaController {
 
         if (f == null) return;
 
-        facturaService.buscarFactura(f.getIdFactura());
+        facturaService.eliminarFactura(f.getIdFactura());
 
         cargarFacturas();
+        tablaDetalles.getItems().clear();
+        facturaActual = null;
     }
+
+    // ============================
+    // VOLVER
+    // ============================
     @FXML
     public void volver() {
         try {
@@ -251,5 +323,4 @@ public class FacturaController {
             e.printStackTrace();
         }
     }
-
 }
