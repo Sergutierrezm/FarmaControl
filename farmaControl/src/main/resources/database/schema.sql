@@ -1,4 +1,4 @@
-CREATE DATABASE FarmaControl;
+CREATE DATABASE IF NOT EXISTS FarmaControl;
 USE FarmaControl;
 
 -- =========================

@@ -1,5 +1,6 @@
 package com.farmacontrol.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -7,13 +8,15 @@ public class Factura {
 
     private int idFactura;
     private LocalDateTime fecha;
-    private Cliente cliente;  // Relación con Cliente
-    private Usuario usuario;  // Relación con Usuario
-    private ArrayList<DetalleFactura> detalles = new ArrayList<>(); // Lista de productos
+    private Cliente cliente;
+    private Usuario usuario;
+    private ArrayList<DetalleFactura> detalles = new ArrayList<>();
+    private BigDecimal total;
 
     // Constructor vacío
     public Factura() {
-        this.fecha = LocalDateTime.now(); // Fecha automática al crear
+        this.fecha = LocalDateTime.now();
+        this.total = BigDecimal.ZERO;
     }
 
     // Constructor completo
@@ -22,9 +25,13 @@ public class Factura {
         this.fecha = fecha;
         this.cliente = cliente;
         this.usuario = usuario;
+        this.total = BigDecimal.ZERO;
     }
 
-    // Getters y Setters
+    // =========================
+    // GETTERS Y SETTERS
+    // =========================
+
     public int getIdFactura() {
         return idFactura;
     }
@@ -61,31 +68,67 @@ public class Factura {
         return detalles;
     }
 
-    // Agregar un detalle (producto + cantidad)
-    public void agregarDetalle(DetalleFactura detalle) {
-        detalles.add(detalle);
+    // 🔥 ESTE ERA EL QUE TE FALTABA
+    public void setDetalles(ArrayList<DetalleFactura> detalles) {
+        this.detalles = detalles;
+        calcularTotal(); // mantiene coherencia
     }
 
-    // Calcular total automáticamente
-    public double calcularTotal() {
-        double total = 0;
-        for (DetalleFactura d : detalles) {
-            total += d.getSubtotal();
-        }
+    public BigDecimal getTotal() {
         return total;
     }
 
-    // Mostrar detalles de la factura
-    public void mostrarFactura() {
-        System.out.println("Factura ID: " + idFactura + " - Fecha: " + fecha);
-        System.out.println("Cliente: " + (cliente != null ? cliente.getNombre() : "No asignado"));
-        System.out.println("Usuario: " + (usuario != null ? usuario.getNombre() : "No asignado"));
-        System.out.println("Detalles:");
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    // =========================
+    // LÓGICA DE NEGOCIO
+    // =========================
+
+    // Añadir detalle
+    public void agregarDetalle(DetalleFactura detalle) {
+        detalle.setFactura(this);
+        detalles.add(detalle);
+        calcularTotal();
+    }
+
+    // Calcular total
+    public void calcularTotal() {
+
+        BigDecimal totalCalculado = BigDecimal.ZERO;
+
         for (DetalleFactura d : detalles) {
-            System.out.println("  Producto: " + d.getProducto().getNombre() +
+            totalCalculado = totalCalculado.add(d.getSubtotal());
+        }
+
+        this.total = totalCalculado;
+    }
+
+    // Debug
+    public void mostrarFactura() {
+
+        System.out.println("Factura ID: " + idFactura + " - Fecha: " + fecha);
+
+        System.out.println("Cliente: " +
+                (cliente != null ? cliente.getNombre() : "No asignado"));
+
+        System.out.println("Usuario: " +
+                (usuario != null ? usuario.getNombre() : "No asignado"));
+
+        System.out.println("Detalles:");
+
+        for (DetalleFactura d : detalles) {
+
+            String nombreProducto = (d.getProducto() != null)
+                    ? d.getProducto().getNombre()
+                    : "N/A";
+
+            System.out.println("  Producto: " + nombreProducto +
                     " | Cantidad: " + d.getCantidad() +
                     " | Subtotal: " + d.getSubtotal());
         }
-        System.out.println("TOTAL: " + calcularTotal());
+
+        System.out.println("TOTAL: " + total);
     }
 }

@@ -32,9 +32,7 @@ public class MenuController {
 
             String rol = usuario.getRol().getNombre();
 
-            // CONTROL POR ROL
             if (!rol.equalsIgnoreCase("ADMIN")) {
-
                 btnUsuarios.setManaged(false);
                 btnUsuarios.setVisible(false);
             }
@@ -49,10 +47,8 @@ public class MenuController {
 
         try {
 
-            // limpiar sesión
             Sesion.cerrarSesion();
 
-            // volver al login
             FXMLLoader loader =
                     new FXMLLoader(getClass().getResource("/view/login.fxml"));
 
@@ -91,6 +87,48 @@ public class MenuController {
     }
 
     @FXML
+    public void abrirProveedores() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/proveedores.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gestión de Proveedores");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void abrirClientes() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/clientes.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gestión de Clientes");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void abrirUsuarios() {
 
         try {
@@ -112,12 +150,12 @@ public class MenuController {
     }
 
     @FXML
-    public void abrirProveedores() {
+    public void abrirFacturas() {
 
         try {
 
             FXMLLoader loader =
-                    new FXMLLoader(getClass().getResource("/view/proveedores.fxml"));
+                    new FXMLLoader(getClass().getResource("/view/factura.fxml"));
 
             Parent root = loader.load();
 
@@ -125,12 +163,32 @@ public class MenuController {
                     (Stage) lblBienvenida.getScene().getWindow();
 
             stage.setScene(new Scene(root));
-            stage.setTitle("Gestión de Proveedores");
+            stage.setTitle("Facturas");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @FXML
+    public void abrirInformes() {
+
+        try {
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/informes.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Informes");
+
+        } catch (Exception e) {
+            System.out.println("❌ ERROR ABRIENDO INFORMES:");
+            e.printStackTrace();
+        }
+    }
 
 }

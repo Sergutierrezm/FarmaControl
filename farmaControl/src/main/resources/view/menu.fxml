@@ -27,12 +27,23 @@
                     prefHeight="50"/>
 
             <Button text="Facturas"
+                    onAction="#abrirFacturas"
+                    prefWidth="250"
+                    prefHeight="50"/>
+
+            <Button text="Clientes"
+                    onAction="#abrirClientes"
                     prefWidth="250"
                     prefHeight="50"/>
 
             <Button fx:id="btnUsuarios"
                     text="Usuarios"
                     onAction="#abrirUsuarios"
+                    prefWidth="250"
+                    prefHeight="50"/>
+
+            <Button text="Informes"
+                    onAction="#abrirInformes"
                     prefWidth="250"
                     prefHeight="50"/>
 
