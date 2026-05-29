@@ -21,20 +21,14 @@
                     prefWidth="250"
                     prefHeight="50"/>
 
-            <Button text="Facturas"
-                    onAction="#abrirFacturas"
+            <Button text="Proveedores"
+                    onAction="#abrirProveedores"
                     prefWidth="250"
                     prefHeight="50"/>
 
-
-            <Button fx:id="btnUsuarios"
-
-                    text="Usuarios"
-
-                    onAction="#abrirUsuarios"
-
+            <Button text="Facturas"
+                    onAction="#abrirFacturas"
                     prefWidth="250"
-
                     prefHeight="50"/>
 
             <Button text="Clientes"
@@ -42,6 +36,11 @@
                     prefWidth="250"
                     prefHeight="50"/>
 
+            <Button fx:id="btnUsuarios"
+                    text="Usuarios"
+                    onAction="#abrirUsuarios"
+                    prefWidth="250"
+                    prefHeight="50"/>
 
             <Button text="Informes"
                     onAction="#abrirInformes"
@@ -52,10 +51,6 @@
                     onAction="#cerrarSesion"
                     prefWidth="250"
                     prefHeight="50"/>
-
-
-
-
 
         </VBox>
 

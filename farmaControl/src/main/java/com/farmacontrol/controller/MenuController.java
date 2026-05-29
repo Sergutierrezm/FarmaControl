@@ -32,9 +32,7 @@ public class MenuController {
 
             String rol = usuario.getRol().getNombre();
 
-            // CONTROL POR ROL
             if (!rol.equalsIgnoreCase("ADMIN")) {
-
                 btnUsuarios.setManaged(false);
                 btnUsuarios.setVisible(false);
             }
@@ -49,10 +47,8 @@ public class MenuController {
 
         try {
 
-            // limpiar sesión
             Sesion.cerrarSesion();
 
-            // volver al login
             FXMLLoader loader =
                     new FXMLLoader(getClass().getResource("/view/login.fxml"));
 
@@ -84,6 +80,27 @@ public class MenuController {
 
             stage.setScene(new Scene(root));
             stage.setTitle("Productos");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void abrirProveedores() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/view/proveedores.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage =
+                    (Stage) lblBienvenida.getScene().getWindow();
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gestión de Proveedores");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,6 +148,7 @@ public class MenuController {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void abrirFacturas() {
 
@@ -172,6 +190,5 @@ public class MenuController {
             e.printStackTrace();
         }
     }
-
 
 }
