@@ -127,18 +127,18 @@ public class FacturaDAO {
     // =========================
     // ELIMINAR
     // =========================
-    public void eliminar(int id) {
-
-        String sql = "DELETE FROM Factura WHERE id_factura = ?";
+    public static void eliminar(int idFactura) {
+        String sql = "DELETE FROM factura WHERE id_factura = ?";
 
         try (Connection conn = ConexionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
+            stmt.setInt(1, idFactura);
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new RuntimeException("❌ Error al eliminar factura", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 }

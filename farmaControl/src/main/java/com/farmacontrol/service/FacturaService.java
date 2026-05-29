@@ -29,7 +29,7 @@ public class FacturaService {
     }
 
     // =========================
-    // AÑADIR PRODUCTO (solo lógica en memoria)
+    // AÑADIR PRODUCTO
     // =========================
     public void agregarProducto(Factura factura, Producto producto, int cantidad) {
 
@@ -84,4 +84,11 @@ public class FacturaService {
     public Factura buscarFactura(int id) {
         return facturaDAO.buscarPorId(id);
     }
+
+// =========================
+// ELIMINAR FACTURA
+// =========================
+public void eliminarFactura(int idFactura) {
+    FacturaDAO.eliminar(idFactura);
+}
 }
